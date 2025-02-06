@@ -12,6 +12,14 @@ window.onload = function () {
   const topicForm = document.getElementById("topic-form");
   const clearBtn = document.getElementById("clear-btn");
 
+  const topicDateInput = document.getElementById("topic-date");
+  
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0]; 
+
+  // Set the value of the input field to today's date
+  topicDateInput.value = today;
+
   const users = getUserIds();
   
   users.forEach(userId => {
@@ -55,22 +63,45 @@ function getRevisionDates(startDate) {
 
  // Display agenda items for selected user
 
- function showAgenda() {
+ // Display agenda items for selected user
+// Display agenda items for selected user
+function showAgenda() {
   const userSelect = document.getElementById("user-select");
   const agendaDiv = document.getElementById("agenda");
 
   const userId = userSelect.value;
-  const agendaItems = getData(userId);
+  let agendaItems = getData(userId);
 
-  agendaDiv.innerHTML = agendaItems && agendaItems.length > 0
-    ? `<h3>User ${userId}'s Agenda:</h3>
+  // If no agenda items found, set agendaItems to an empty array
+  if (!agendaItems) {
+    agendaItems = [];
+  }
+
+  // Get current date to compare against revision dates
+  const currentDate = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+  // Filter agenda items to only show future revisions
+  const futureAgendaItems = agendaItems.filter(item => {
+    const revisions = item.revisions || {};
+    // Compare revision dates with current date to filter out past items
+    return (
+      (revisions.oneWeek && revisions.oneWeek >= currentDate) ||
+      (revisions.oneMonth && revisions.oneMonth >= currentDate) ||
+      (revisions.threeMonths && revisions.threeMonths >= currentDate) ||
+      (revisions.sixMonths && revisions.sixMonths >= currentDate) ||
+      (revisions.oneYear && revisions.oneYear >= currentDate)
+    );
+  });
+
+  // Display agenda or show a message if no future agenda items exist
+  agendaDiv.innerHTML = futureAgendaItems.length > 0
+    ? `<h3>User ${userId}'s Upcoming Agenda:</h3>
        <ul>
-         ${agendaItems.map(item => {
-           // Ensure revisions exist, even if it wasn't correctly added in the first place
+         ${futureAgendaItems.map(item => {
            const revisions = item.revisions || {};
            return `<li>
                      ${item.topic} - ${item.date} <br>
-                     <strong>Revisions:</strong> <br>
+                     <strong>Upcoming Revisions:</strong> <br>
                      1 Week: ${revisions.oneWeek || "N/A"} <br>
                      1 Month: ${revisions.oneMonth || "N/A"} <br>
                      3 Months: ${revisions.threeMonths || "N/A"} <br>
@@ -79,8 +110,10 @@ function getRevisionDates(startDate) {
                    </li>`;
          }).join('')}
        </ul>`
-    : "<p>No agenda items found for this user</p>";
+    : "<p>No upcoming agenda items for this user</p>";
 }
+
+
 
 // Initial agenda display
 showAgenda();
