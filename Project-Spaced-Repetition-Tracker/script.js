@@ -11,12 +11,9 @@ window.onload = function () {
   const agendaDiv = document.getElementById("agenda");
   const topicForm = document.getElementById("topic-form");
   const clearBtn = document.getElementById("clear-btn");
-
   const topicDateInput = document.getElementById("topic-date");
-  
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split('T')[0]; 
-
   // Set the value of the input field to today's date
   topicDateInput.value = today;
 
@@ -27,7 +24,7 @@ window.onload = function () {
    option.value = userId;
    option.textContent = `user ${userId}`
   userSelect.append(option)
-  });
+  }); 
 };
 
 // creating revision date 1 week => 1 year
@@ -79,7 +76,7 @@ function showAgenda() {
 
   // Get current date to compare against revision dates
   const currentDate = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
+  
   // Filter agenda items to only show future revisions
   const futureAgendaItems = agendaItems.filter(item => {
     const revisions = item.revisions || {};
@@ -100,13 +97,14 @@ function showAgenda() {
          ${futureAgendaItems.map(item => {
            const revisions = item.revisions || {};
            return `<li>
-                     ${item.topic} - ${item.date} <br>
-                     <strong>Upcoming Revisions:</strong> <br>
-                     1 Week: ${revisions.oneWeek || "N/A"} <br>
-                     1 Month: ${revisions.oneMonth || "N/A"} <br>
-                     3 Months: ${revisions.threeMonths || "N/A"} <br>
-                     6 Months: ${revisions.sixMonths || "N/A"} <br>
-                     1 Year: ${revisions.oneYear || "N/A"}
+                    <Strong>${item.topic} - ${item.date}</strong> <br><br>
+
+                     Upcoming Revisions: <br><br>
+                     <strong>1 Week:</strong>  ${item.topic} ${revisions.oneWeek || "N/A"} <br>
+                     <strong>1 Month:</strong> ${item.topic} ${revisions.oneMonth || "N/A"} <br>
+                     <strong>3 Month:</strong> ${item.topic} ${revisions.threeMonths || "N/A"} <br>
+                     <strong>6 Month:</strong> ${item.topic} ${revisions.sixMonths || "N/A"} <br>
+                     <strong>1 Year:</strong>  ${item.topic} ${revisions.oneYear || "N/A"}
                    </li>`;
          }).join('')}
        </ul>`
@@ -149,31 +147,3 @@ clearBtn.addEventListener('click', function() {
       showAgenda();
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-// getUserIds() .. saqib done
-//when called, returns an array of strings, each of which is a user id
-
-// getData(userId) .. donara
-//when called with a user id string as an argument, returns an array of objects, 
-//each of which represents an agenda item for the user
-
-// addData(userId, data) ...saqib
-//when called with a user id string and an array of objects as arguments, 
-//it will append the agenda items data to the user’s stored agenda. 
-//Each of the objects should contain information about the agenda item, 
-//such as the date and topic that should be revised on that date. The function does not return anything
-
-//clearData(userId)... donara
-// when called with a user id string as an argument, 
-//it will clear any stored data associated with the user id. 
-//This is provided to help with development, and is not required in the final code
