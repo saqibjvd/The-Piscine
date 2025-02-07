@@ -4,9 +4,6 @@ import { getUserIds, getData, addData, clearData } from "./storage.js";
 
 window.onload = function () {
   const userSelect = document.getElementById("user-select")
-  const agendaDiv = document.getElementById("agenda");
-  const topicForm = document.getElementById("topic-form");
-  const clearBtn = document.getElementById("clear-btn");
   const topicDateInput = document.getElementById("topic-date");
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split('T')[0]; 
