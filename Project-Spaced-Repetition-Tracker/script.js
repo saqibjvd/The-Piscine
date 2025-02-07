@@ -24,7 +24,7 @@ window.onload = function () {
 };
 
 // creating revision date 1 week => 1 year
-function getRevisionDates(startDate) {
+export function getRevisionDates(startDate) {
   const start = new Date(startDate);
 
   // Calculate different revision intervals
@@ -137,3 +137,4 @@ clearBtn.addEventListener('click', function() {
       showAgenda();
   }
 });
+
