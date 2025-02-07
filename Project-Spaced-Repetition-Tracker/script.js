@@ -59,6 +59,7 @@ function showAgenda() {
   const agendaDiv = document.getElementById("agenda");
 
   const userId = userSelect.value;
+  console.log(userId, "userid giving error in test ")
   let agendaItems = getData(userId);
 
   // If no agenda items found, set agendaItems to an empty array
@@ -137,3 +138,6 @@ clearBtn.addEventListener('click', function() {
       showAgenda();
   }
 });
+
+//export { getRevisionDates };
+//module.exports = getRevisionDates;
